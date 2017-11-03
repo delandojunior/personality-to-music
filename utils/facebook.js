@@ -48,7 +48,7 @@ function getPosts(req, res, accesstoken){
     function getLikes(listalikes){
       //console.log(listalikes);
       listalikes.forEach( function(element, index) {
-        allLikes.push(element);
+        allLikes.push(element.id);
       });
       console.log('likes ', allLikes.length);
     }
@@ -113,7 +113,7 @@ function getPosts(req, res, accesstoken){
       req.session.itens=texto;
       
   }
-  function getPagePost(req,res,response,p){
+function getPagePost(req,res,response,p){
       request({
           url: p,
           json: true
@@ -140,16 +140,60 @@ function getPosts(req, res, accesstoken){
                   req.session.qtdPosts = qtdPosts;
                   //req.session.save();
                   console.log(qtdPosts.lidos, qtdPosts.utilizados);
-                  res.send({"texto":texto,"likes":allLikes});
-
+                  //res.send({"texto":texto,"likes":allLikes});
+                  auth(res, allLikes);
                   //pi.personalidade(req,res,req.session.itens);
                   //res.redirect("/pi/match");
                   
               }
           }
       });
-      
-    
   }
 
-module.exports ={getPosts};
+function getPersonality (res, token, userLikes) {
+  console.log('token', token);
+  console.log('curtidas' , userLikes);
+  request.post(
+    { headers: {'Content-type': 'application/json', 'Accept': 'application/json', 'X-Auth-Token': token},
+      url:'https://api.applymagicsauce.com/like_ids?interpretations=true&contributors=true',
+      body: JSON.stringify(userLikes)
+    }, 
+      
+    function(err,httpResponse,body){
+      console.log(httpResponse.statusCode);
+      if (err){
+        console.log('error', err);
+        res.send(err);
+      }else{
+        var response = JSON.parse(body);
+        console.log('token', response);
+        res.send(response);
+      }
+    });
+
+}
+
+function auth(res, curtidas){
+  request.post(
+    { headers: {'Content-type': 'application/json', 'Accept': 'application/json'},
+      url:'https://api.applymagicsauce.com/auth',
+      body: JSON.stringify({ 'customer_id': 3360,'api_key': '2vm8aqjfhnrfkbf1m01lg4j21m'})
+    }, 
+      
+    function(err,httpResponse,body){
+      console.log(httpResponse.statusCode);
+      if (err){
+        console.log('error', err);
+        
+      }else{
+        var response = JSON.parse(body);
+        getPersonality(res, response.token, curtidas);
+        
+      }
+    })
+
+}
+
+
+
+module.exports ={getPosts, auth};
