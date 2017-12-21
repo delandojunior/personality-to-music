@@ -1,12 +1,15 @@
 // router/routes.js
 var FacebookStrategy = require('passport-facebook').Strategy;
+var SpotifyStrategy = require('passport-spotify').Strategy;
 var passport = require('passport');
 var express = require('express');
 var router = express.Router();
 var configAuth = require('../config/auth');
 var face = require("../utils/facebook");
+var spotify = require('../utils/spotify');
 
 var accessToken="";
+var accessTokenSpotify="";
 
 
     // used to serialize the user for the session
@@ -93,5 +96,56 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 };
+
+
+// =====================================
+// SPOTIFY ROUTES =====================
+// =====================================
+
+passport.use(new SpotifyStrategy({
+    clientID        : configAuth.spotifyAuth.clientID,
+    clientSecret    : configAuth.spotifyAuth.clientSecret,
+    callbackURL     : 'http://localhost:3000/login/auth/spotify/callback'
+  },
+  function(accessToken, refreshToken, profile, done) {
+    
+    process.nextTick(function() {
+        accessTokenSpotify = accessToken;
+        userId = profile.id;
+        // set all of the facebook information in our user model
+        console.log(profile.id); // set the users facebook id                   
+        console.log(accessToken); // we will save the token that facebook provides to the user                    
+        console.log("profile"); // look at the passport user profile to see how names are returned
+        console.log(profile); // facebook can return multiple emails so we'll take the first
+
+        return done(null, profile);
+
+    });
+
+
+  }
+));
+
+router.get('/auth/spotify',
+  passport.authenticate('spotify', {scope: ['user-read-email', 'user-read-recently-played', 'user-top-read', 'playlist-read-private'] }),
+  function(req, res){
+    // The request will be redirected to spotify for authentication, so this 
+    // function will not be called. 
+  });
+
+ 
+router.get('/auth/spotify/callback',
+  passport.authenticate('spotify',{
+    successRedirect : '/login/profileSpotify',
+    failureRedirect : '/'
+}));
+
+router.get('/profileSpotify', isLoggedIn, function(req, res) {
+    console.log('Logado com sucesso no spotify');
+    console.log(req.session.nameFB);
+
+    //spotify.lastMusics(res,res,accessTokenSpotify, req.session.nameFB);
+    spotify.playlist2017(res,res,accessTokenSpotify, userId);
+});
 
 module.exports = router;

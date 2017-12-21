@@ -1,5 +1,8 @@
 var FB = require('fb');
 var request = require("request");
+var ams = require("./applyMagicSauce");
+var watson = require("./personality");
+var session = require("express-session")
 
 //variáveis auxiliares.
 var p = null;
@@ -20,14 +23,14 @@ function getPosts(req, res, accesstoken){
      return;
     }
     console.log(res.id);
-    req.session.nameFB = res.name;
+    req.session.nameFB = res.id;
     req.session.save();
     console.log("aq: "+res.name);
 
   });
   
 	FB.api('me', {fields :'id,name,posts,likes'}, function(response) {
-					console.log(response.name);
+					console.log(req.session.nameFB);
 	                //itens.contentItems = '';
 	                //texto = '';
 	                //qtdPosts = {"lidos":0, "utilizados":0};
@@ -138,11 +141,12 @@ function getPagePost(req,res,response,p){
                   //req.session.itens=itens.contentItems;
                   req.session.itens.texto=texto;
                   req.session.qtdPosts = qtdPosts;
+                  console.log(texto);
                   //req.session.save();
-                  console.log(qtdPosts.lidos, qtdPosts.utilizados);
+                  //console.log(qtdPosts.lidos, qtdPosts.utilizados);
                   //res.send({"texto":texto,"likes":allLikes});
-                  auth(res, allLikes);
-                  //pi.personalidade(req,res,req.session.itens);
+                  //ams.auth(res, allLikes);
+                  watson.personalidade(req,res,req.session.itens,req.session.nameFB);
                   //res.redirect("/pi/match");
                   
               }
@@ -150,50 +154,10 @@ function getPagePost(req,res,response,p){
       });
   }
 
-function getPersonality (res, token, userLikes) {
-  console.log('token', token);
-  console.log('curtidas' , userLikes);
-  request.post(
-    { headers: {'Content-type': 'application/json', 'Accept': 'application/json', 'X-Auth-Token': token},
-      url:'https://api.applymagicsauce.com/like_ids?interpretations=true&contributors=true',
-      body: JSON.stringify(userLikes)
-    }, 
-      
-    function(err,httpResponse,body){
-      console.log(httpResponse.statusCode);
-      if (err){
-        console.log('error', err);
-        res.send(err);
-      }else{
-        var response = JSON.parse(body);
-        console.log('token', response);
-        res.send(response);
-      }
-    });
-
-}
-
-function auth(res, curtidas){
-  request.post(
-    { headers: {'Content-type': 'application/json', 'Accept': 'application/json'},
-      url:'https://api.applymagicsauce.com/auth',
-      body: JSON.stringify({ 'customer_id': 3360,'api_key': '2vm8aqjfhnrfkbf1m01lg4j21m'})
-    }, 
-      
-    function(err,httpResponse,body){
-      console.log(httpResponse.statusCode);
-      if (err){
-        console.log('error', err);
-        
-      }else{
-        var response = JSON.parse(body);
-        getPersonality(res, response.token, curtidas);
-        
-      }
-    })
-
-}
 
 
 
-module.exports ={getPosts, auth};
+
+
+
+module.exports ={getPosts};

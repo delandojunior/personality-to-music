@@ -4,7 +4,7 @@ var utils = require('../utils/facebook');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express' , name : ""});
 });
 
 router.get('/auth', function(req, res, next) {
