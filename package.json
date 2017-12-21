@@ -22,6 +22,7 @@
     "passport-spotify": "^0.3.1",
     "request": "^2.83.0",
     "serve-favicon": "~2.4.2",
-    "spotify-web-api-node": "^2.5.0"
+    "spotify-web-api-node": "^2.5.0",
+    "watson-developer-cloud": "^3.0.3"
   }
 }
