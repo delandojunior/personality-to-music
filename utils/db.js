@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 
-mongoose.connect('mongodb://localhost:27017/userData');
+mongoose.connect('mongodb://delandojunior:jr9506@ds161426.mlab.com:61426/userdata');
 
 var userDataSchema = new mongoose.Schema({
     _id: String,
