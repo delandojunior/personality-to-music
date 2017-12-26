@@ -22,7 +22,7 @@ function lastMusics (req,res, accessToken, idFB) {
 		var query = { _id: idFB}
 	    Users.findOneAndUpdate(query, { _id: idFB, musics: data.body }, {upsert:true}, function(err, doc){
 		    if (err) return res.send(500, { error: err });
-		    return res.rendirect('/obrigado');
+		    return res.redirect('/obrigado');
 		});
 
 	  }, function(err) {
