@@ -4,8 +4,8 @@ var db = require("./db.js");
 
 var personality_insights = new PersonalityInsightsV3({
 	url: "https://gateway.watsonplatform.net/personality-insights/api",
-	username: 'd59aa588-14df-4042-80d0-58e9783b12d9',
-	password: '1hTeuWML3aZY',
+	username: '72c8a375-12e5-4d63-af83-b17ae29fe5ec',
+	password: 'oRpB6annVfEI',
 	version_date: '2017-10-13'
 });
 

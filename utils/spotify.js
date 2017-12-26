@@ -13,10 +13,12 @@ var spotifyApi = new SpotifyWebApi({
 function lastMusics (req,res, accessToken, idFB) {
 	spotifyApi.setAccessToken(accessToken);
 	//spotifyApi.getMyRecentlyPlayedTracks({limit: 50})
-	spotifyApi.getMyTopTracks({limit: 100})
+	spotifyApi.getMyTopTracks({limit: 50})
 	  .then(function(data) {
-	    console.log('Artist information', data.body);
+	    //console.log('Artist information', data.body);
 	    var Users = db.Mongoose.model('usercollection', db.UserSchema, 'usersData');
+	    console.log('idFB');
+	    console.log(idFB);
 		var query = { _id: idFB}
 	    Users.findOneAndUpdate(query, { _id: idFB, musics: data.body }, {upsert:true}, function(err, doc){
 		    if (err) return res.send(500, { error: err });
@@ -28,7 +30,7 @@ function lastMusics (req,res, accessToken, idFB) {
 	});
 }
 
-function playlist2017(req, res, accessToken, userId){
+function playlist2017(req, res, accessToken, userId, idFB){
 	spotifyApi.setAccessToken(accessToken);
 	spotifyApi.getUserPlaylists().then(function(data) {
     	//console.log('Found playlists are', data.body);
@@ -37,7 +39,8 @@ function playlist2017(req, res, accessToken, userId){
     		if(element.name == "Your Top Songs 2017"){
     			playlist = element;
     			console.log(element.id);
-    			savePlaylist(req, res, userId, element.id, accessToken);
+    			savePlaylist(req, res, userId, element.id, accessToken, idFB);
+
     		}
     		//console.log(element.name);
     	});
@@ -48,12 +51,18 @@ function playlist2017(req, res, accessToken, userId){
 
 }
 
-function savePlaylist (req, res, userId, playlistId, accessToken) {
+function savePlaylist (req, res, userId, playlistId, accessToken, idFB) {
 	//spotifyApi.setAccessToken(accessToken);
 	spotifyApi.getPlaylist('spotify', playlistId)
 	.then(function(data) {
-    	console.log('Some information about this playlist', data.body);
-    	req.send(data.body);
+    	//console.log('Some information about this playlist', data.body);
+    	//req.send(data.body);
+    	var Users = db.Mongoose.model('usercollection', db.UserSchema, 'usersData');
+		var query = { _id: idFB}
+	    Users.findOneAndUpdate(query, { _id: idFB, musics2017: data.body }, {upsert:true}, function(err, doc){
+		    if (err) return res.send(500, { error: err });
+		    lastMusics(res,res,accessToken, idFB);
+		});
   	}, function(err) {
     	console.log('Something went wrong!', err);
   	});

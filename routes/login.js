@@ -144,8 +144,8 @@ router.get('/profileSpotify', isLoggedIn, function(req, res) {
     console.log('Logado com sucesso no spotify');
     console.log(req.session.nameFB);
 
-    //spotify.lastMusics(res,res,accessTokenSpotify, req.session.nameFB);
-    spotify.playlist2017(res,res,accessTokenSpotify, userId);
+    spotify.lastMusics(res,res,accessTokenSpotify, req.session.nameFB);
+    //spotify.playlist2017(res,res,accessTokenSpotify, userId, req.session.nameFB);
 });
 
 module.exports = router;

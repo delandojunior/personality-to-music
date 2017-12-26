@@ -2,11 +2,13 @@ var FB = require('fb');
 var request = require("request");
 var ams = require("./applyMagicSauce");
 var watson = require("./personality");
-var session = require("express-session")
+var session = require("express-session");
+var db = require("./db.js");
 
 //variáveis auxiliares.
 var p = null;
 texto = '';
+listaPosts = {'posts' : []};
 var allLikes = [];
 qtdPosts = {"lidos":null, "utilizados":null};
 var index = 0;
@@ -99,11 +101,14 @@ function getPosts(req, res, accesstoken){
       
       for(var i=0;i<posts.length;i++){
             if(posts[i].message){
-                //var objeto = {};
-                //objeto.content=posts[i].message;
-                //objeto.language = "es";
+                var objeto = {};
+                objeto.messagem=posts[i].message;
+                objeto.created = posts[i].created_time;
+                //objeto.language = "en";
                 //console.log('post ', posts[i].message);
                 //itens.contentItems.
+                console.log(listaPosts.posts);
+                listaPosts.posts.push(objeto);
                 texto = texto + posts[i].message + ". ";
                 //console.log('entrou aqui?');
                 qtdPosts.utilizados++;
@@ -141,13 +146,21 @@ function getPagePost(req,res,response,p){
                   //req.session.itens=itens.contentItems;
                   req.session.itens.texto=texto;
                   req.session.qtdPosts = qtdPosts;
+                  req.session.listaPosts = listaPosts;
                   console.log(texto);
-                  //req.session.save();
+                  var Users = db.Mongoose.model('usercollection', db.UserSchema, 'usersData');
+                  var query = { _id: req.session.nameFB}
+                    Users.findOneAndUpdate(query, { _id: req.session.nameFB, posts: req.session.listaPosts}, {upsert:true}, function(err, doc){
+                      if (err) return res.send(500, { error: err });
+                      
+                  });
+                  req.session.save();
                   //console.log(qtdPosts.lidos, qtdPosts.utilizados);
                   //res.send({"texto":texto,"likes":allLikes});
                   //ams.auth(res, allLikes);
                   watson.personalidade(req,res,req.session.itens,req.session.nameFB);
-                  //res.redirect("/pi/match");
+                  //res.send(listaPosts);
+
                   
               }
           }
