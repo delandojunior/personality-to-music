@@ -105,7 +105,7 @@ function isLoggedIn(req, res, next) {
 passport.use(new SpotifyStrategy({
     clientID        : configAuth.spotifyAuth.clientID,
     clientSecret    : configAuth.spotifyAuth.clientSecret,
-    callbackURL     : 'http://localhost:3000/login/auth/spotify/callback'
+    callbackURL     : 'https://personality-to-music.herokuapp.com/login/auth/spotify/callback'
   },
   function(accessToken, refreshToken, profile, done) {
     
