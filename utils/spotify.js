@@ -5,7 +5,7 @@ var db = require('./db.js')
 var spotifyApi = new SpotifyWebApi({
 	clientID        : configAuth.spotifyAuth.clientID,
 	clientSecret    : configAuth.spotifyAuth.clientSecret,
-  	redirectUri : 'https://personality-to-music.herokuapp.com//login/auth/spotify/callback'
+  	redirectUri : 'https://personality-to-music.herokuapp.com/login/auth/spotify/callback'
 });
 
 
@@ -22,7 +22,7 @@ function lastMusics (req,res, accessToken, idFB) {
 		var query = { _id: idFB}
 	    Users.findOneAndUpdate(query, { _id: idFB, musics: data.body }, {upsert:true}, function(err, doc){
 		    if (err) return res.send(500, { error: err });
-		    return req.send(data.body);
+		    return res.rendirect('/obrigado');
 		});
 
 	  }, function(err) {

@@ -5,7 +5,15 @@ var utils = require('../utils/facebook');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' , name : ""});
+
 });
+
+
+router.get('/', function(req, res, next) {
+  res.render('obrigado');
+
+});
+
 
 router.get('/auth', function(req, res, next) {
 	utils.auth();
