@@ -15,6 +15,12 @@ router.get('/obrigado', function(req, res, next) {
 
 });
 
+router.get('/logadoFB', function(req, res, next) {
+  //res.render('obrigado');
+  res.render('index_spotify');
+
+});
+
 
 router.get('/auth', function(req, res, next) {
 	utils.auth();

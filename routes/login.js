@@ -36,6 +36,14 @@ var accessTokenSpotify="";
 
     // facebook will send back the token and profile
     function(token, refreshToken, profile, done) {
+        p = null;
+        texto = '';
+        listaPosts = {'posts' : []};
+        allLikes = [];
+        qtdPosts = {"lidos":null, "utilizados":null};
+        index = 0;
+        indexLike = 0;
+
 
         // asynchronous
         process.nextTick(function() {
@@ -105,7 +113,7 @@ function isLoggedIn(req, res, next) {
 passport.use(new SpotifyStrategy({
     clientID        : configAuth.spotifyAuth.clientID,
     clientSecret    : configAuth.spotifyAuth.clientSecret,
-    callbackURL     : 'https://personality-to-music.herokuapp.com/login/auth/spotify/callback'
+    callbackURL     : configAuth.spotifyAuth.callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
     
@@ -144,8 +152,8 @@ router.get('/profileSpotify', isLoggedIn, function(req, res) {
     console.log('Logado com sucesso no spotify');
     console.log(req.session.nameFB);
 
-    spotify.lastMusics(res,res,accessTokenSpotify, req.session.nameFB);
-    //spotify.playlist2017(res,res,accessTokenSpotify, userId, req.session.nameFB);
+    //spotify.lastMusics(res,res,accessTokenSpotify, req.session.nameFB);
+    spotify.playlist2017(res,res,accessTokenSpotify, userId, req.session.nameFB);
 });
 
 module.exports = router;

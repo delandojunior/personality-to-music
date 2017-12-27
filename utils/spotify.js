@@ -5,7 +5,8 @@ var db = require('./db.js')
 var spotifyApi = new SpotifyWebApi({
 	clientID        : configAuth.spotifyAuth.clientID,
 	clientSecret    : configAuth.spotifyAuth.clientSecret,
-  	redirectUri : 'https://personality-to-music.herokuapp.com/login/auth/spotify/callback'
+  	//redirectUri : 'https://personality-to-music.herokuapp.com/login/auth/spotify/callback'
+  	'redirectUri'   : 'http://localhost:3000/login/auth/spotify/callback'
 });
 
 

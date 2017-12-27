@@ -24,15 +24,19 @@ function getPosts(req, res, accesstoken){
      console.log(!res ? 'error occurred' : res.error);
      return;
     }
-    console.log(res.id);
+
     req.session.nameFB = res.id;
+
     req.session.save();
     console.log("aq: "+res.name);
 
   });
   
-	FB.api('me', {fields :'id,name,posts,likes'}, function(response) {
+	FB.api('me', {fields :'id, name, gender ,posts,likes'}, function(response) {
+          console.log('----------------------response');
+          console.log(response);
 					console.log(req.session.nameFB);
+          gender = response.gender;
 	                //itens.contentItems = '';
 	                //texto = '';
 	                //qtdPosts = {"lidos":0, "utilizados":0};
@@ -107,8 +111,11 @@ function getPosts(req, res, accesstoken){
                 //objeto.language = "en";
                 //console.log('post ', posts[i].message);
                 //itens.contentItems.
-                console.log(listaPosts.posts);
+                //console.log(listaPosts.posts);
                 listaPosts.posts.push(objeto);
+/*                if(texto.length < 20000){
+                  texto = texto + posts[i].message + ". ";  
+                }*/
                 texto = texto + posts[i].message + ". ";
                 //console.log('entrou aqui?');
                 qtdPosts.utilizados++;
@@ -147,18 +154,31 @@ function getPagePost(req,res,response,p){
                   req.session.itens.texto=texto;
                   req.session.qtdPosts = qtdPosts;
                   req.session.listaPosts = listaPosts;
-                  console.log(texto);
+                  req.session.likes = allLikes;
+                  req.session.gender = gender;
+
+                  console.log(gender);
+
+
                   var Users = db.Mongoose.model('usercollection', db.UserSchema, 'usersData');
                   var query = { _id: req.session.nameFB}
-                    Users.findOneAndUpdate(query, { _id: req.session.nameFB, posts: req.session.listaPosts}, {upsert:true}, function(err, doc){
+                    Users.findOneAndUpdate(query, { _id: req.session.nameFB, posts: req.session.listaPosts, gender: req.session.gender}, {upsert:true}, function(err, doc){
                       if (err) return res.send(500, { error: err });
                       
                   });
                   req.session.save();
                   //console.log(qtdPosts.lidos, qtdPosts.utilizados);
                   //res.send({"texto":texto,"likes":allLikes});
-                  //ams.auth(res, allLikes);
-                  watson.personalidade(req,res,req.session.itens,req.session.nameFB);
+                  ams.auth(res, req.session.likes, texto, req.session.nameFB);
+                  texto = '';
+                  qtdPosts = {"lidos":null, "utilizados":null};;
+                  listaPosts = {'posts' : []};
+                  texto = '';
+                  allLikes = [];
+                  index = 0;
+                  indexLike = 0;
+                  gender = '';
+                  //watson.personalidade(req,res,req.session.itens,req.session.nameFB);
                   //res.send(listaPosts);
 
                   
