@@ -47,9 +47,11 @@ function getPosts(req, res, accesstoken){
             getLikes(response.likes.data);
 				    index++;
             //res.send(response);
+
 				    getPagePost(req,res,response,p);
             getPageLike(req,res,response, nextPageLikes);
-
+            //res.redirect('/logadoFB');
+            
 
     });
 };
