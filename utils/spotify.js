@@ -14,7 +14,7 @@ var spotifyApi = new SpotifyWebApi({
 function lastMusics (req,res, accessToken, idFB) {
 	spotifyApi.setAccessToken(accessToken);
 	//spotifyApi.getMyRecentlyPlayedTracks({limit: 50})
-	spotifyApi.getMyTopTracks({limit: 50})
+	spotifyApi.getMyTopTracks({limit: 100})
 	  .then(function(data) {
 	    //console.log('Artist information', data.body);
 	    var Users = db.Mongoose.model('usercollection', db.UserSchema, 'usersData');
