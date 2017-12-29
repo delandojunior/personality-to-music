@@ -44,8 +44,8 @@ function playlist2017(req, res, accessToken, userId, idFB){
 
     		}
     		//console.log(element.name);
-    		lastMusics(res,res,accessToken, idFB);
     	});
+    	lastMusics(res,res,accessToken, idFB);
     	//req.send(playlist);
   	}, function(err) {
     	console.log('Something went wrong!', err);
