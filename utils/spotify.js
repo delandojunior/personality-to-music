@@ -44,10 +44,12 @@ function playlist2017(req, res, accessToken, userId, idFB){
 
     		}
     		//console.log(element.name);
+    		lastMusics(res,res,accessToken, idFB);
     	});
     	//req.send(playlist);
   	}, function(err) {
     	console.log('Something went wrong!', err);
+    	lastMusics(res,res,accessToken, idFB);
   	});
 
 }
@@ -62,7 +64,7 @@ function savePlaylist (req, res, userId, playlistId, accessToken, idFB) {
 		var query = { _id: idFB}
 	    Users.findOneAndUpdate(query, { _id: idFB, musics2017: data.body }, {upsert:true}, function(err, doc){
 		    if (err) return res.send(500, { error: err });
-		    lastMusics(res,res,accessToken, idFB);
+		    
 		});
   	}, function(err) {
     	console.log('Something went wrong!', err);
