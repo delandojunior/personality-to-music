@@ -50,7 +50,7 @@ function getPosts(req, res, accesstoken){
 
 				    getPagePost(req,res,response,p);
             getPageLike(req,res,response, nextPageLikes);
-            //res.redirect('/logadoFB');
+            res.redirect('/logadoFB');
             
 
     });

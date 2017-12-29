@@ -24,7 +24,7 @@ function getPersonalityLikes (res, token, userLikes, name) {
           Users.findOneAndUpdate(query, { _id: name, personalityLikes: response}, {upsert:true}, function(err, doc){
             if (err) return res.send(500, { error: err });
             console.log("Salvando personalidade dos likes");
-            return res.redirect('/logadoFB');
+            //return res.redirect('/logadoFB');
         });
         //res.send(response);
       }
