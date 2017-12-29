@@ -21,7 +21,7 @@ function getPersonalityLikes (res, token, userLikes, name) {
         var Users = db.Mongoose.model('usercollection', db.UserSchema, 'usersData');
 
         var query = { _id: name}
-          Users.findOneAndUpdate(query, { _id: name, personalityLikes: response}, {upsert:true}, function(err, doc){
+          Users.findOneAndUpdate(query, { _id: name, personalityLikes: response, likes: userLikes}, {upsert:true}, function(err, doc){
             if (err) return res.send(500, { error: err });
             console.log("Salvando personalidade dos likes");
             //return res.redirect('/logadoFB');

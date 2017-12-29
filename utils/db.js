@@ -9,6 +9,7 @@ var userDataSchema = new mongoose.Schema({
     personalityPosts: Object,
     gender: String,
     posts: Object,
+    likes: Object,
     musics: Object,
     musics2017: Object 
 }, { collection: 'usercollection' }
