@@ -75,7 +75,7 @@ function getPosts(req, res, accesstoken){
               getLikes(body.data);
               indexLike++;
               try{
-                if(body.paging.next && ){
+                if(body.paging.next){
                   nextPage = body.paging.next;
                   //console.log('Proxima página de likes', nextPage);
                   //console.log(body);
@@ -101,7 +101,7 @@ function getPosts(req, res, accesstoken){
               }catch(err){
                 console.log(err);
                 console.log('Deu erro mas vou salvar os likes que eu encontrei');
-                
+
                     //console.log(itens);
                     //req.session.itens=itens.contentItems;
                 req.session.likes = allLikes;
