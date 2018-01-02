@@ -74,28 +74,40 @@ function getPosts(req, res, accesstoken){
               //console.log(body) // Print the json responsePage
               getLikes(body.data);
               indexLike++;
-              if(body.paging.next){
-                nextPage = body.paging.next;
-                //console.log('Proxima página de likes', nextPage);
-                //console.log(body);
-                //console.log('Total de caracteres ', texto.length);
-                //qtdPosts.lidos = qtdPosts.lidos + Number(body.data.length);
-                getPageLike(req,res,body,nextPage);
-              }
-              else{
-                  //res.render('/pi/match', { req: req.user, posts:JSON.stringify(itens)  });
-                  console.log('Entrou no redirecionamento do likes');
-                  //console.log(itens);
-                  //req.session.itens=itens.contentItems;
-                  req.session.likes = allLikes;
-                  //req.session.qtdPosts = qtdPosts;
-                  //req.session.save();
-                  console.log(allLikes.length);
-                  //res.send(texto);
+              try{
+                if(body.paging.next && ){
+                  nextPage = body.paging.next;
+                  //console.log('Proxima página de likes', nextPage);
+                  //console.log(body);
+                  //console.log('Total de caracteres ', texto.length);
+                  //qtdPosts.lidos = qtdPosts.lidos + Number(body.data.length);
+                  getPageLike(req,res,body,nextPage);
+                }
+                else{
+                    //res.render('/pi/match', { req: req.user, posts:JSON.stringify(itens)  });
+                    console.log('Entrou no redirecionamento do likes');
+                    //console.log(itens);
+                    //req.session.itens=itens.contentItems;
+                    req.session.likes = allLikes;
+                    //req.session.qtdPosts = qtdPosts;
+                    //req.session.save();
+                    console.log(allLikes.length);
+                    //res.send(texto);
 
-                  //pi.personalidade(req,res,req.session.itens);
-                  //res.redirect("/pi/match");
-                  //res.send(allLikes);
+                    //pi.personalidade(req,res,req.session.itens);
+                    //res.redirect("/pi/match");
+                    //res.send(allLikes);
+                }
+              }catch(err){
+                console.log(err);
+                console.log('Deu erro mas vou salvar os likes que eu encontrei');
+                
+                    //console.log(itens);
+                    //req.session.itens=itens.contentItems;
+                req.session.likes = allLikes;
+                    //req.session.qtdPosts = qtdPosts;
+                    //req.session.save();
+                console.log(allLikes.length);
               }
           }
       });
