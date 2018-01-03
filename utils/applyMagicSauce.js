@@ -2,8 +2,8 @@ var request = require("request");
 var db = require("./db.js");
 
 function getPersonalityLikes (res, token, userLikes, name) {
-  console.log('token', token);
-  console.log('curtidas' , userLikes);
+  console.log('token get personality likes', token);
+  //console.log('curtidas' , userLikes);
   request.post(
     { headers: {'Content-type': 'application/json', 'Accept': 'application/json', 'X-Auth-Token': token},
       url:'https://api.applymagicsauce.com/like_ids?interpretations=true&contributors=true',
@@ -34,8 +34,8 @@ function getPersonalityLikes (res, token, userLikes, name) {
 
 
 function getPersonalityPosts (res, token, posts, likes, name) {
-  console.log('token', token);
-  console.log('curtidas' , posts);
+  console.log('token get personality posts', token);
+  //console.log('curtidas' , posts);
   request.post(
     { headers: {'Content-type': 'application/json', 'Accept': 'application/json', 'X-Auth-Token': token},
       url:'https://api.applymagicsauce.com/text?interpretations=true&source=STATUS_UPDATE',
@@ -78,7 +78,7 @@ function auth(res, curtidas, posts,  idFB){
         
       }else{
         var response = JSON.parse(body);
-        console.log(posts);
+        //console.log(posts);
         //getPersonalityLikes(res, response.token, curtidas, idFB);
         getPersonalityPosts(res, response.token, posts, curtidas, idFB);
         

@@ -34,7 +34,7 @@ function getPosts(req, res, accesstoken){
   
 	FB.api('me', {fields :'id, name, gender ,posts,likes'}, function(response) {
           console.log('----------------------response');
-          console.log(response);
+          //console.log(response);
 					console.log(req.session.nameFB);
           gender = response.gender;
 	                //itens.contentItems = '';
