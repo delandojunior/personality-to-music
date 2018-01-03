@@ -152,6 +152,7 @@ function getPagePost(req,res,response,p){
               //console.log(body) // Print the json response
               getMessages(req, body.data);
               index++;
+              try{
               if(body.paging){
                 p = body.paging.next;
                 console.log('Proxima página de posts ', texto.length);
@@ -197,6 +198,38 @@ function getPagePost(req,res,response,p){
 
                   
               }
+            }catch (error){
+
+                                console.log('Entrou no redirecionamento do post');
+                  //console.log(itens);
+                  //req.session.itens=itens.contentItems;
+                  req.session.itens.texto=texto;
+                  req.session.qtdPosts = qtdPosts;
+                  req.session.listaPosts = listaPosts;
+                  req.session.likes = allLikes;
+                  req.session.gender = gender;
+
+                  console.log(gender);
+
+
+                  var Users = db.Mongoose.model('usercollection', db.UserSchema, 'usersData');
+                  var query = { _id: req.session.nameFB}
+                    Users.findOneAndUpdate(query, { _id: req.session.nameFB, posts: req.session.listaPosts, gender: req.session.gender}, {upsert:true}, function(err, doc){
+                      if (err) return res.send(500, { error: err });
+                      
+                  });
+                  req.session.save();
+                                  ams.auth(res, req.session.likes, texto, req.session.nameFB);
+                  texto = '';
+                  qtdPosts = {"lidos":null, "utilizados":null};;
+                  listaPosts = {'posts' : []};
+                  texto = '';
+                  allLikes = [];
+                  index = 0;
+                  indexLike = 0;
+                  gender = '';
+
+            }
           }
       });
   }
