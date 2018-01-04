@@ -68,7 +68,7 @@ function auth(res, curtidas, posts,  idFB){
   request.post(
     { headers: {'Content-type': 'application/json', 'Accept': 'application/json'},
       url:'https://api.applymagicsauce.com/auth',
-      body: JSON.stringify({ 'customer_id': 3360,'api_key': '2vm8aqjfhnrfkbf1m01lg4j21m'})
+      body: JSON.stringify({ 'customer_id': 3541,'api_key': 'dogvqne35lrneu69v2rhnkp9q3'})
     }, 
       
     function(err,httpResponse,body){
