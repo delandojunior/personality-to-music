@@ -13,6 +13,15 @@ function getPersonalityLikes (res, token, userLikes, name) {
       
     function(err,httpResponse,body){
       console.log(httpResponse.statusCode);
+      if(httpResponse.statusCode == 204){
+        console.log('insuficiente likes');
+        var query = { _id: name}
+          Users.findOneAndUpdate(query, { _id: name, personalityLikes: {"input_used" : 0}, likes: userLikes}, {upsert:true}, function(err, doc){
+            if (err) return res.send(500, { error: err });
+            console.log("Salvando personalidade dos likes");
+            //return res.redirect('/logadoFB');
+        });
+      }
       if (err){
         console.log('error', err);
         res.send(err);
