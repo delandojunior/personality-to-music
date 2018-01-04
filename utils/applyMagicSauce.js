@@ -3,6 +3,7 @@ var db = require("./db.js");
 
 function getPersonalityLikes (res, token, userLikes, name) {
   console.log('token get personality likes', token);
+  console.log('lista de likes ', userLikes);
   //console.log('curtidas' , userLikes);
   request.post(
     { headers: {'Content-type': 'application/json', 'Accept': 'application/json', 'X-Auth-Token': token},
