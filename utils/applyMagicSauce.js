@@ -15,6 +15,7 @@ function getPersonalityLikes (res, token, userLikes, name) {
       console.log(httpResponse.statusCode);
       if(httpResponse.statusCode == 204){
         console.log('insuficiente likes');
+        var Users = db.Mongoose.model('usercollection', db.UserSchema, 'usersData');
         var query = { _id: name}
           Users.findOneAndUpdate(query, { _id: name, personalityLikes: {"input_used" : 0}, likes: userLikes}, {upsert:true}, function(err, doc){
             if (err) return res.send(500, { error: err });
